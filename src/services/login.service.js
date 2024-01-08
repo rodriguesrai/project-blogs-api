@@ -1,19 +1,17 @@
+// services/login.service.js
+
 const { User } = require('../models');
 
-const validateLogin = async (req, res, next) => {
-  const { email, password } = req.body;
-  if (!email || !password) {
-    return res.status(400).json({ message: 'Some required fields are missing' });
-  }
-
+const validateLoginService = async ({ email, password }) => {
   const user = await User.findOne({ where: { email, password } });
 
   if (!user || password !== user.password) {
-    return res.status(400).json({ message: 'Invalid fields' });
+    return { status: 400, data: 'Invalid fields' };
   }
-  req.user = user;
-  
-  next();
+
+  return { status: 200, data: user };
 };
 
-module.exports = validateLogin;
+module.exports = {
+  validateLoginService,
+};

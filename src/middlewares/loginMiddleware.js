@@ -1,3 +1,5 @@
+// middlewares/loginMiddleware.js
+
 const { User } = require('../models');
 
 const validateLogin = async (req, res, next) => {
@@ -8,12 +10,13 @@ const validateLogin = async (req, res, next) => {
 
   const user = await User.findOne({ where: { email, password } });
 
-  if (!user || password !== user.password) {
+  if (!user || user.password !== password) {
     return res.status(400).json({ message: 'Invalid fields' });
   }
-  req.user = user;
   
   next();
 };
 
-module.exports = validateLogin;
+module.exports = {
+  validateLogin,
+};
