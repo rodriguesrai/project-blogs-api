@@ -35,7 +35,7 @@ module.exports = {
 
       image: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: true
       },
     }, {
       timestamps: false, // Desativa timestamps
