@@ -1,22 +1,21 @@
+// authMiddleware.js
 const jwt = require('jsonwebtoken');
+
+const extractToken = (token) => token.slice(7);
 
 const authorizationLogin = (req, res, next) => {
   const authorizationHeader = req.headers.authorization;
 
-  if (!authorizationHeader || !authorizationHeader.startsWith('Bearer ')) {
+  if (!authorizationHeader) {
     return res.status(401).json({ message: 'Token not found' });
   }
 
-  const token = authorizationHeader.slice(7);
+  const token = extractToken(authorizationHeader);
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded;
+    jwt.verify(token, process.env.JWT_SECRET);
     next();
-  } catch (error) {
-    if (error.name === 'TokenExpiredError') {
-      return res.status(401).json({ message: 'Expired or invalid token' });
-    }
+  } catch (err) {
     return res.status(401).json({ message: 'Expired or invalid token' });
   }
 };

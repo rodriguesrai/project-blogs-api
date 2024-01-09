@@ -1,7 +1,7 @@
 // userController.js
 const { userService } = require('../services');
 
-const userController = async (req, res) => {
+const createUser = async (req, res) => {
   const { status, data } = await userService.createUser(req.body);
 
   const response = {
@@ -10,7 +10,13 @@ const userController = async (req, res) => {
 
   return res.status(status).json(response[status] || { token: data.token });
 };
+const getAllUsers = async (req, res) => {
+  const { status, data } = await userService.getAllUsers();
+
+  return res.status(status).json(data);
+};
 
 module.exports = {
-  userController,
+  createUser,
+  getAllUsers,
 };
