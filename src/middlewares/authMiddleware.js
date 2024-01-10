@@ -13,7 +13,8 @@ const authorizationLogin = (req, res, next) => {
   const token = extractToken(authorizationHeader);
 
   try {
-    jwt.verify(token, process.env.JWT_SECRET);
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decodedToken;
     next();
   } catch (err) {
     return res.status(401).json({ message: 'Expired or invalid token' });
